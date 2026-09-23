@@ -19,7 +19,10 @@ BARK_DEFAULT_BASE = "https://api.day.app"
 
 def _extract_point(energy_resp: dict) -> str:
     """从 myEnergy 响应中安全地取出 point 字段，取不到时返回 '?'。"""
-    return str((energy_resp.get("data") or {}).get("point", "?"))
+    data = energy_resp.get("data")
+    if not isinstance(data, dict):
+        return "?"
+    return str(data.get("point", "?"))
 
 
 def build_markdown_report(result: dict) -> str:
